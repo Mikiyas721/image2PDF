@@ -1,0 +1,20 @@
+{
+  "name": "imagetopdf",
+  "version": "1.0.0",
+  "description": "This is a telegram bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "12.6.0"
+  },
+  "keywords": [],
+  "author": "miki",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "telegraf": "^3.38.0"
+  }
+}
