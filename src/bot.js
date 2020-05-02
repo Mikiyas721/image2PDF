@@ -1,22 +1,45 @@
 const Telegraf = require('telegraf');
-const axios = require('axios');
+const bot = new Telegraf('1111631380:AAFDD02uWSR6pXLwb8xoyGGpG5FeHYqhpyI');
 const api = require('convertapi')('XnxiVRXLqFjv9yRm');
 
-const bot = new Telegraf('1111631380:AAFDD02uWSR6pXLwb8xoyGGpG5FeHYqhpyI');
+
+let fileUrl = '';
 
 const helpString = `*Image to PDF Bot*
 This bot helps you *convert* your image files to PDF with only a few steps`;
 
+const toFile = `*Choose the file format you want to change to:* 
+/jpg
+/pdf
+/png
+`;
+
+bot.on('photo', async ctx => {
+    fileUrl = await ctx.telegram.getFileLink(ctx.update.message.photo[(ctx.update.message.photo.length) - 1].file_id);
+    console.log(ctx);
+    ctx.telegram.sendMessage(ctx.chat.id, toFile, {parse_mode: "Markdown"});
+
+});
+
 bot.command('start', ctx => {
     ctx.telegram.sendMessage(ctx.chat.id, helpString, {
-        parse_mode: "MarkdownV2"
+        parse_mode: "Markdown"
     })
 });
 
-bot.on('photo', async ctx => {
-    const userImageLink = await ctx.telegram.getFileLink(ctx.update.message.photo[(ctx.update.message.photo.length) - 1].file_id);
-    const resultPromise = await api.convert('pdf', {File: userImageLink});
+bot.command("jpg", async ctx => {
+    const resultPromise = await api.convert('jpg', {File: fileUrl});
+    ctx.replyWithPhoto(resultPromise.response.Files[0].Url)
+});
+
+bot.command("pdf", async ctx => {
+    const resultPromise = await api.convert('pdf', {File: fileUrl});
     ctx.replyWithDocument(resultPromise.response.Files[0].Url)
+});
+
+bot.command("png", async ctx => {
+    const resultPromise = await api.convert('png', {File: fileUrl});
+    ctx.replyWithPhoto(resultPromise.response.Files[0].Url)
 });
 
 
