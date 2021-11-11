@@ -1,6 +1,8 @@
 const Telegraf = require('telegraf');
-const bot = new Telegraf('1111631380:AAFDD02uWSR6pXLwb8xoyGGpG5FeHYqhpyI');
-const api = require('convertapi')('XnxiVRXLqFjv9yRm');
+require('dotenv').config();
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
+const api = require('convertapi')(process.env.API_TOKEN);
 
 
 let fileUrl = '';
